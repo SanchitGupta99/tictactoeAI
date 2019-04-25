@@ -6,7 +6,7 @@
 import copy
 
 #this is a object which represents the current state of the board
-class boardState(object):
+class BoardState(object):
     def __init__(self,player):
         self.curPlayer = player
         self.boards = [[0 for x in range(1, 10)] for o in range(1, 10)]
@@ -36,7 +36,7 @@ class boardState(object):
 
     #updates the current state of the board by adding a move
     def move(self,move,board):
-        
+
         if board is None:
             board = self.curBoardNumber
 

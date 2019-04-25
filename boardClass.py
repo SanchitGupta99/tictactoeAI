@@ -39,6 +39,8 @@ class boardState(object):
 
 		self.curPlayer = -self.curPlayer
 
+    def boardScore(self,player):
+
 
     # creates a new board which adds a move to the current board
     def nextBoard(self,move):

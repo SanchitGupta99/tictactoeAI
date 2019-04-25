@@ -35,7 +35,7 @@ class BoardState(object):
         return validMoves
 
     #updates the current state of the board by adding a move
-    def move(self,move,board):
+    def move(self,board,move):
 
         if board is None:
             board = self.curBoardNumber
@@ -85,5 +85,5 @@ class BoardState(object):
     # creates a new board which adds a move to the current board
     def nextBoard(self,move):
         newB= copy.deepcopy(self)
-        newB.move(move,None)
+        newB.move(None,board)
         return newB

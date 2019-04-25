@@ -6,7 +6,7 @@
 import copy
 
 #this is a object which represents the current state of the board
-class BoardState(object):
+class GameState(object):
     def __init__(self,player):
         self.us=player
         self.curPlayer = player

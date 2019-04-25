@@ -8,6 +8,7 @@ import copy
 #this is a object which represents the current state of the board
 class BoardState(object):
     def __init__(self,player):
+        self.us=player
         self.curPlayer = player
         self.boards = [[0 for x in range(1, 10)] for o in range(1, 10)]
         self.curBoardNumber = 0

@@ -16,6 +16,14 @@ class boardState(object):
         self.xPlayerScore = 0
         self.oPlayerScore = 0
 
+
+    def getScore(self):
+        if self.curPlayer==1:
+            return self.xPlayerScore - self.oPlayerScore
+        else:
+            return self.oPlayerScore - self.xPlayerScore
+
+
     # generating a list of valid moves for the current board
     def validMoves(self):
         validMoves=[]
@@ -35,11 +43,42 @@ class boardState(object):
 
 		self.boards[curBoardNumber-1][move] = self.curPlayer
 
-        '''HAVE TO ADD SCORE FUNCTION HERE'''
+
+        self.xPlayerScore= self.boardScore(1)
+        self.oPlayerScore = self.boardScore(-1)
 
 		self.curPlayer = -self.curPlayer
 
+
+
     def boardScore(self,player):
+        current = self.lastBoardNumber-1
+        score =0
+
+        combos = []
+        for i in range(0, 3):
+            combos.append(range(i*3, i*3+3))
+            combos.append(range(i, 9, 3))
+        combos.append(range(2, 8, 2))
+        combos.append(range(0, 9, 4))
+        for possibleWinner in combos:
+            count = 0
+            for i in possibleWinner:
+                if self.boards[current][i] == player:
+                    count += 1
+                elif self.boards[current][i] == -player:
+                    count -= 3
+            if count == 3:
+                score += 1000000
+            elif count == 2:
+                score += 10
+            elif count == 1:
+                score += 1
+        return score
+
+
+
+
 
 
     # creates a new board which adds a move to the current board

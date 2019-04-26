@@ -19,7 +19,7 @@ class GameState(object):
 
 
     def getScore(self):
-        if self.curPlayer==1:
+        if self.us==1:
             return self.xPlayerScore - self.oPlayerScore
         else:
             return self.oPlayerScore - self.xPlayerScore

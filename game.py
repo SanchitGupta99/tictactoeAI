@@ -81,7 +81,28 @@ class GameState(object):
                 score += 1
         return score
 
-
+    def isEnd(self):
+        combos = []
+        for i in range(0, 3):
+            combos.append(range(i*3, i*3+3))
+            combos.append(range(i, 9, 3))
+        combos.append(range(2, 8, 2))
+        combos.append(range(0, 9, 4))
+        for current in range(9):
+            for possibleWinner in combos:
+                count = 0
+                for i in possibleWinner:
+                    if self.boards[current][i] == 1:
+                        count += 1
+                if count == 3:
+                    return True
+            for possibleWinner in combos:
+                count = 0
+                for i in possibleWinner:
+                    if self.boards[current][i] == -1:
+                        count += 1
+                if count == 3:
+                    return True
 
     # creates a new board which adds a move to the current board
     def nextBoard(self,move):

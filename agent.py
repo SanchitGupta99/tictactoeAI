@@ -1,26 +1,47 @@
 from game import GameState
+from math import inf
 
 gameState = GameState()
-currentBoard = None
+currBoard = None
+MINIMAX_DEPTH = 5
 
 def minimaxMove():
-    return alphabeta()
+    return alphaBeta(gameState, MINIMAX_DEPTH, -1 * inf, inf)
 
-def alphaBeta():
+def alphaBeta(game, depth, alpha, beta):
+    if game.isEnd() or depth == 0:
+        return game.getScore()
+    
+    moves = game.validMoves()
 
-
-
+    for move in moves:
+        alpha = max(alpha, -1 * alphaBeta(game.nextBoard(move), depth-1, alpha, beta))
+        if alpha >= beta:
+            return alpha
+    return alpha
 
 # called at the beginning of each game
 def agentSecondMove(firstBoard, firstMove):
-    boardState.move(firstBoard, firstMove)
+    # First move
+    gameState.move(firstBoard, firstMove)
+    # Next move
+    minimaxMove()
 
-def agentThirdMove():
-    boardState.move(firstBoard, firstMove)
-    boardState.move(currentBoard, secondMove)
-def agentNextMove():
+def agentThirdMove(firstBoard, firstMove, secondMove):
+    # First two moves
+    gameState.move(firstBoard, firstMove)
+    gameState.move(currBoard, secondMove)
+    # Next move
+    minimaxMove()
 
-def agentLastMove():
+def agentNextMove(prevMove):
+    # Previous move
+    gameState.move(currBoard, prevMove)
+    # Next move
+    minimaxMove()
+
+def agentLastMove(prevMove):
+    gameState.move(currBoard, prevMove)
 
 
 # read what the server sent us and
@@ -34,17 +55,11 @@ def parse(string):
         command, args = string, []
 
     if command == "second_move":
-        place(int(args[0]), int(args[1]), 2)
-        return play()
+        agentSecondMove(int(args[0]), int(args[1]))
     elif command == "third_move":
-        # place the move that was generated for us
-        place(int(args[0]), int(args[1]), 1)
-        # place their last move
-        place(curr, int(args[2]), 2)
-        return play()
+        agentThirdMove(int(args[0]), int(args[1]), int(args[2]))
     elif command == "next_move":
-        place(curr, int(args[0]), 2)
-        return play()
+        agentNextMove(int(args[0]))
     elif command == "win":
         print("Yay!! We win!! :)")
         return -1

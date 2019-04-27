@@ -6,16 +6,16 @@ currBoard = None
 MINIMAX_DEPTH = 5
 
 def minimaxMove():
-    return alphaBeta(gameState, MINIMAX_DEPTH, -1 * inf, inf)
+    return alphaBeta(gameState, MINIMAX_DEPTH, (-1 * inf,-1), (inf,-1))[1]
 
 def alphaBeta(game, depth, alpha, beta):
     if game.isEnd() or depth == 0:
-        return game.getScore()
+        return (game.getScore(),-1)
 
     moves = game.validMoves()
 
     for move in moves:
-        alpha = max(alpha, -1 * alphaBeta(game.nextBoard(move), depth-1, -beta, -alpha))
+        alpha = max(alpha, (-1 * alphaBeta(game.nextBoard(move), depth-1, -beta, -alpha))[0],move)
         if alpha >= beta:
             return alpha
     return alpha

@@ -15,7 +15,7 @@ def alphaBeta(game, depth, alpha, beta):
     moves = game.validMoves()
 
     for move in moves:
-        alpha = max(alpha, (-1 * alphaBeta(game.nextBoard(move), depth-1, -beta, -alpha))[0],move)
+        alpha = max(alpha, (-1 * alphaBeta(game.nextBoard(move), depth-1, -beta, -alpha)[0],move))
         if alpha >= beta:
             return alpha
     return alpha

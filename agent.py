@@ -1,15 +1,50 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 from game import GameState
 from math import inf
 import socket
 import sys
 
-gameState = None
+gameState = GameState()
 currBoard = None
-MINIMAX_DEPTH = 5
+MINIMAX_DEPTH = 3
+
 
 def minimaxMove():
-    return alphaBeta(gameState, MINIMAX_DEPTH, (-1 * inf,-1), (inf,-1))[1]
+    def alphaBeta(game,player,depth,alpha,beta):
+        if game.isEnd() or depth==0:
+            return (game.getScore(),-1)
+        moves = game.validMoves()
+        if depth==3:
+            print(str(game.curBoardNumber) + "woth moves" + str(moves))
+        if player ==1:
+            ans = (-float('Inf'),-1)
+            for move in moves:
+                ans = max(ans, (alphaBeta(game.nextBoard(move),-player,depth-1,alpha,beta)[0],move))
+                alpha = max(alpha,ans)
+                if alpha>=beta:
+                    break
+            return alpha
+        else:
+            ans = (float('Inf'),-1)
+            for move in moves:
+                ans = min(ans,(alphaBeta(game.nextBoard(move),-player,depth-1,alpha,beta)[0],move))
+                beta = min(beta,ans)
+                if alpha>=beta:
+                    break
+            return beta
+    alphInitial = (-float('Inf'),-1)
+    betInitial = (float('Inf'),-1)
+    ut,action=alphaBeta(gameState,1,MINIMAX_DEPTH,alphInitial,betInitial)
+    print("THE ACTION IS {} with score {}".format(action,ut))
+    gameState.move(currBoard,action)
+    return action
+
+
+'''
+def minimaxMove():
+    move= alphaBeta(gameState, MINIMAX_DEPTH, (-1 * inf,-1), (inf,-1))[1]
+    gameState.move(currBoard,move)
+    return move
 
 def alphaBeta(game, depth, alpha, beta):
     if game.isEnd() or depth == 0:
@@ -18,10 +53,15 @@ def alphaBeta(game, depth, alpha, beta):
     moves = game.validMoves()
 
     for move in moves:
-        alpha = max(alpha, (-1 * alphaBeta(game.nextBoard(move), depth-1, -beta, -alpha)[0],move))
+        alpha = max(alpha, (alphaBeta(gameState.nextBoard(move),
+							depth - 1, -1*beta, -1*alpha)[0]*-1, move))
+        #print(alpha)
         if alpha >= beta:
             return alpha
     return alpha
+'''
+
+
 
 # called at the beginning of each game
 def agentSecondMove(firstBoard, firstMove):
@@ -29,20 +69,20 @@ def agentSecondMove(firstBoard, firstMove):
     gameState.flipPlayer()
     gameState.move(firstBoard, firstMove)
     # Next move
-    minimaxMove()
+    return minimaxMove()
 
 def agentThirdMove(firstBoard, firstMove, secondMove):
     # First two moves
     gameState.move(firstBoard, firstMove)
     gameState.move(currBoard, secondMove)
     # Next move
-    minimaxMove()
+    return minimaxMove()
 
 def agentNextMove(prevMove):
     # Previous move
     gameState.move(currBoard, prevMove)
     # Next move
-    minimaxMove()
+    return minimaxMove()
 
 def agentLastMove(prevMove):
     gameState.move(currBoard, prevMove)
@@ -60,15 +100,17 @@ def parse(string):
 
     if command =="start":
         if args[0] == "x":
-            gameState = GameState(1)
+            print("setting player to x")
+            gameState.setPlayer('x')
         elif args[0] == "o":
-            gameState = GameState(-1)
+            print("setting player to o ")
+            gameState.setPlayer('o')
     elif command == "second_move":
-        agentSecondMove(int(args[0]), int(args[1]))
+        return agentSecondMove(int(args[0]), int(args[1]))
     elif command == "third_move":
-        agentThirdMove(int(args[0]), int(args[1]), int(args[2]))
+        return agentThirdMove(int(args[0]), int(args[1]), int(args[2]))
     elif command == "next_move":
-        agentNextMove(int(args[0]))
+        return agentNextMove(int(args[0]))
     elif command == "win":
         print("Yay!! We win!! :)")
         return -1

@@ -1,5 +1,8 @@
+#!/usr/bin/python3
 from game import GameState
 from math import inf
+import socket
+import sys
 
 gameState = None
 currBoard = None
@@ -23,8 +26,8 @@ def alphaBeta(game, depth, alpha, beta):
 # called at the beginning of each game
 def agentSecondMove(firstBoard, firstMove):
     # First move
-    gameState.move(firstBoard, firstMove)
     gameState.flipPlayer()
+    gameState.move(firstBoard, firstMove)
     # Next move
     minimaxMove()
 

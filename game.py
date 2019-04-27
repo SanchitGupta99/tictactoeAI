@@ -39,22 +39,15 @@ class GameState(object):
 
     #updates the current state of the board by adding a move
     def move(self,board,move):
-
         if board is None:
             board = self.curBoardNumber
-
         self.lastBoardNumber= self.curBoardNumber
         self.lastMove= move
         self.curBoardNumber= move
-
-
-		self.boards[board-1][move] = self.curPlayer
-
-
+        self.boards[board-1][move] = self.curPlayer
         self.xPlayerScore= self.boardScore(1)
         self.oPlayerScore = self.boardScore(-1)
-
-		self.curPlayer = -self.curPlayer
+        self.curPlayer = -self.curPlayer
 
 
 

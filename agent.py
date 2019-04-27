@@ -1,7 +1,7 @@
 from game import GameState
 from math import inf
 
-gameState = GameState()
+gameState = None
 currBoard = None
 MINIMAX_DEPTH = 5
 
@@ -24,6 +24,7 @@ def alphaBeta(game, depth, alpha, beta):
 def agentSecondMove(firstBoard, firstMove):
     # First move
     gameState.move(firstBoard, firstMove)
+    gameState.flipPlayer()
     # Next move
     minimaxMove()
 
@@ -54,7 +55,12 @@ def parse(string):
     else:
         command, args = string, []
 
-    if command == "second_move":
+    if command =="start":
+        if args[0] == "x":
+            gameState = GameState(1)
+        elif args[0] == "o":
+            gameState = GameState(-1)
+    elif command == "second_move":
         agentSecondMove(int(args[0]), int(args[1]))
     elif command == "third_move":
         agentThirdMove(int(args[0]), int(args[1]), int(args[2]))

@@ -24,6 +24,8 @@ class GameState(object):
         else:
             return self.oPlayerScore - self.xPlayerScore
 
+    def flipPlayer(self):
+        self.curPlayer=self.curPlayer*-1
 
     # generating a list of valid moves for the current board
     def validMoves(self):

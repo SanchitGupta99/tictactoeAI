@@ -11,11 +11,11 @@ def minimaxMove():
 def alphaBeta(game, depth, alpha, beta):
     if game.isEnd() or depth == 0:
         return game.getScore()
-    
+
     moves = game.validMoves()
 
     for move in moves:
-        alpha = max(alpha, -1 * alphaBeta(game.nextBoard(move), depth-1, alpha, beta))
+        alpha = max(alpha, -1 * alphaBeta(game.nextBoard(move), depth-1, -beta, -alpha))
         if alpha >= beta:
             return alpha
     return alpha

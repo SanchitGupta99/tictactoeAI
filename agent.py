@@ -8,7 +8,87 @@ gameState = GameState()
 currBoard = None
 MINIMAX_DEPTH = 3
 
+class Tree(object):
+    """A Tree with a list of Trees as children
+        and a value (a Board)"""
+    children = []
+    value = None
 
+    def __init__(self, value):
+        self.value = value
+        self.children = []
+
+    def add_child(self, child):
+        self.children.append(child)
+
+    def add_children(self, children):
+        self.children.extend(children)
+
+
+def generate_tree(current_board, depth):
+    """Generate a Tree from a given board"""
+    states = Tree(current_board)
+
+    if depth == 0:
+        return states
+
+    moves = current_board.validMoves()
+    if depth==3:
+        print(moves)
+    for i in moves:
+        states.add_child(generate_tree(current_board.nextBoard(i), depth - 1))
+    return states
+
+
+def minimaxMove():
+    move_tree = generate_tree(gameState,MINIMAX_DEPTH)
+
+    best_board = None
+    best_score = -1000000
+
+    a = -1000000000
+    b =  1000000000
+    for child in move_tree.children:
+        child_score = min_score(child, a, b)
+        if child_score > best_score:
+            best_board = child.value
+            best_score = child_score
+
+    gameState.move(currBoard,best_board.curBoardNumber)
+    print("BEST ATION IS {} WITH SCORE {}".format(best_board.curBoardNumber,best_score))
+    return best_board.curBoardNumber
+
+
+
+def max_score(tree, a, b):
+
+    if len(tree.children) == 0:
+        return tree.value.getScore()
+
+    for child in tree.children:
+        a = max(a, min_score(child, a, b))
+        if b <= a:
+            break
+    return a
+
+
+def min_score(tree, a, b):
+
+    if len(tree.children) == 0:
+        return tree.value.getScore()
+
+    for child in tree.children:
+        b = min(b, max_score(child, a, b))
+        if b <= a:
+            break
+    return b
+
+
+
+
+#VERSION 2
+
+'''
 def minimaxMove():
     def alphaBeta(game,player,depth,alpha,beta):
         if game.isEnd() or depth==0:
@@ -39,7 +119,9 @@ def minimaxMove():
     gameState.move(currBoard,action)
     return action
 
+'''
 
+#VERSION 1
 '''
 def minimaxMove():
     move= alphaBeta(gameState, MINIMAX_DEPTH, (-1 * inf,-1), (inf,-1))[1]

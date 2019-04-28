@@ -111,6 +111,7 @@ class GameState(object):
                     if self.boards[current][i] == 1:
                         count += 1
                 if count == 3:
+                    print("IVE HTI END WITH X WINNING")
                     return True
             for possibleWinner in combos:
                 count = 0
@@ -119,7 +120,7 @@ class GameState(object):
                         count += 1
                 if count == 3:
                     return True
-
+        return False
     # creates a new board which adds a move to the current board
     def nextBoard(self,move):
         #print(move)

@@ -5,8 +5,35 @@ import sys
 
 gameState= GameState()
 currBoard=None
-depth=6
+depth=3
 
+'''
+def minimaxMove():
+    def alphaBeta(game, depth, alpha, beta, me):
+        if game.isEnd() or depth == 0:
+            return [game.getScore(), -1]
+
+        moves = game.getMoves()
+        for move in moves:
+            print(move)
+            beta[0] *= -1
+            alpha[0] *= -1
+            temp = alphaBeta(game.nextBoard(me,move), depth-1, beta, alpha, not me)
+            temp[0] *= -1
+            if alpha[0] < temp[0]:
+                alpha = temp
+                alpha[1] = move
+            #if alpha[0] >= beta[0]:
+        #        return alpha
+        return alpha
+    ret = alphaBeta(gameState, depth, [inf, -1], [-inf, -1], True)
+    util = ret[0]
+    action = ret[1]
+    gameState.move(currBoard, action, True)
+    return action
+
+
+'''
 def minimaxMove():
     def alphaBeta(game,depth,alpha,beta,me):
         if game.isEnd() or depth==0:
@@ -55,6 +82,8 @@ def minimaxMove():
 def agentSecondMove(firstBoard, firstMove):
     # First move
     gameState.move(firstBoard, firstMove,False)
+    print(gameState.boards)
+    print(gameState.player)
     # Next move
     return minimaxMove()
 
@@ -88,10 +117,10 @@ def parse(string):
     if command =="start":
         if args[0] == "x":
             print("setting player to x")
-            gameState.setPlayer('x')
+            gameState.setPlayer('X')
         elif args[0] == "o":
             print("setting player to o ")
-            gameState.setPlayer('o')
+            gameState.setPlayer('O')
     elif command == "second_move":
         return agentSecondMove(int(args[0]), int(args[1]))
     elif command == "third_move":

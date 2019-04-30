@@ -1,7 +1,7 @@
 import copy
 
-playerX = 1
-playerO = -1
+playerX = "X"
+playerO = "O"
 playerEmpty ="-"
 
 
@@ -47,12 +47,7 @@ class GameState(object):
 
     def score(self,board,player):
         score =0
-        winners=[]
-        for i in range(0,3):
-            winners.append(list(range(i*3,i*3+3)))
-            winners.append(list(range(i,9,3)))
-        winners.append(list(range(2,8,2)))
-        winners.append(list(range(0,9,4)))
+        winners=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
         for combos in winners:
             count =0
@@ -86,11 +81,6 @@ class GameState(object):
         else:
             return self.oPlayerScore-self.xPlayerScore
 
-    def nextBoard(self,me,move):
-        newB = copy.copy(self)
-        newB.move(move,self.curBoardNumber,not me)
-        return newB
-
     def __copy__(self):
         copied = GameState()
         copied.player = copy.deepcopy(self.player)
@@ -102,19 +92,20 @@ class GameState(object):
         copied.oPlayerScore=copy.deepcopy(self.oPlayerScore)
         return copied
 
-    def isEnd(self):
-        winners=[]
-        for i in range(0,3):
-            winners.append(list(range(i*3,i*3+3)))
-            winners.append(list(range(i,9,3)))
-        winners.append(list(range(2,8,2)))
-        winners.append(list(range(0,9,4)))
+    def nextBoard(self,me,move):
+        newB = copy.copy(self)
+        newB.move(move,self.curBoardNumber,not me)
+        return newB
 
+
+
+    def isEnd(self):
+        winners=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for i in range(9):
             for combo in winners:
+                xcount =0
+                ocount =0
                 for j in combo:
-                    xcount =0
-                    ocount =0
                     if self.boards[i][j]==playerX:
                         xcount = xcount +1
                     elif self.boards[i][j]==playerO:

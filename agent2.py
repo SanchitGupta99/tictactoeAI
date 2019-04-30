@@ -5,7 +5,7 @@ import sys
 
 gameState= GameState()
 currBoard=None
-depth=3
+depther=3
 
 '''
 def minimaxMove():
@@ -43,6 +43,7 @@ def minimaxMove():
         if me:
             ans = [-float('Inf'),-1]
             for move in moves:
+                print(move,depth)
                 result = alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0]
                 if ans[0]<result:
                     ans[0]=result
@@ -51,12 +52,13 @@ def minimaxMove():
                     alpha[0] = ans[0]
                     alpha[1]=ans[1]
 
-                if alpha[0] >= beta[0]:
-                    break
+                #if alpha[0] >= beta[0]:
+                #    break
             return alpha
         else:
             ans = [float('Inf'),-1]
             for move in moves:
+                print(move,depth)
                 result = alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0]
                 if ans[0]>result:
                     ans[0]=result
@@ -65,14 +67,14 @@ def minimaxMove():
                     alpha[0] = ans[0]
                     alpha[1]=ans[1]
 
-                if alpha[0]>= beta[0]:
-                    break
+                #if alpha[0]>= beta[0]:
+                #    break
             return beta
 
     alphaInitial=[-float('Inf'),-1]
     betaInitial = [float('Inf'),-1]
 
-    action = alphaBeta(gameState,depth, alphaInitial,betaInitial,True)[1]
+    action = alphaBeta(gameState,depther, alphaInitial,betaInitial,True)[1]
     gameState.move(currBoard,action,True)
     print("action is {}".format(action))
     return action
@@ -82,8 +84,6 @@ def minimaxMove():
 def agentSecondMove(firstBoard, firstMove):
     # First move
     gameState.move(firstBoard, firstMove,False)
-    print(gameState.boards)
-    print(gameState.player)
     # Next move
     return minimaxMove()
 

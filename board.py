@@ -102,9 +102,35 @@ class Board(object):
                 score += 1
         return score
 
-    def is_legal(self, move):
+    def isEnd(self):
+        score = 0
+        winlines = []
+        for a in range(0, 3):
+            winlines.append(range(a*3, a*3+3))
+            winlines.append(range(a, 9, 3))
+        winlines.append(range(2, 8, 2))
+        winlines.append(range(0, 9, 4))
+
+        for i in range(9):
+            for j in winlines:
+                xcount=0
+                ocount=0
+                for k in j:
+                    if self.boards[i][k] == PLAYER_X:
+                        xcount+=1
+                    elif self.boards[i][k] == PLAYER_O:
+                        ocount+=1
+                if ocount==3 or xcount ==3:
+                    return True
+        return False
+
+    def is_legal(self):
         """Given a move, check if it's legal"""
-        return self.boards[self.current_board-1][move-1] == PLAYER_NONE
+        moves=[]
+        for i in range(1,10):
+            if self.boards[self.current_board-1][i-1] == PLAYER_NONE:
+                moves.append(i)
+        return moves
 
     def get_score(self):
         """Calculate the score of the board for the player"""
@@ -112,6 +138,14 @@ class Board(object):
             return self.x_score - self.o_score
         else:
             return self.o_score - self.x_score
+
+
+    def newBoard(self,is_me,move):
+        new_board = copy.copy(self)
+
+        new_board.add_move(move, self.current_board, not is_me)
+        return new_board
+
 
     def next_boards(self, is_me):
         new_boards = []

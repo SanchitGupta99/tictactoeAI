@@ -4,11 +4,37 @@ import re
 import socket
 import random
 import board
+from math import inf
 
 current_board = None
-
+depther=3
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+
+def minimax_move():
+    def alphaBeta(game, depth, alpha, beta, me):
+        if game.isEnd() or depth == 0:
+            return [game.get_score(), -1]
+
+        moves = game.is_legal()
+        for move in moves:
+            print(move,depth)
+            beta[0] *= -1
+            alpha[0] *= -1
+            temp = alphaBeta(game.newBoard(me,move), depth-1, beta, alpha, not me)
+            temp[0] *= -1
+            if alpha[0] < temp[0]:
+                alpha = temp
+                alpha[1] = move
+            #if alpha[0] >= beta[0]:
+                #return alpha
+        return alpha
+    ret = alphaBeta(current_board, depther, [inf, -1], [-inf, -1], True)
+    util = ret[0]
+    action = ret[1]
+    move(action)
+
+'''
 
 class Tree(object):
     """A Tree with a list of Trees as children
@@ -103,8 +129,7 @@ def min_score(tree, a, b, original_player):
         if b <= a:
             break
     return b
-
-
+'''
 #####################################
 #                                   #
 #            SERVER CODE            #

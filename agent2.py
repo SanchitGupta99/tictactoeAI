@@ -14,20 +14,19 @@ def minimaxMove():
         
         moves = game.getMoves()
         for move in moves:
-            print(move)
             beta[0] *= -1
             alpha[0] *= -1
-            temp = alphaBeta(game.nextBoard(me,move), depth-1, beta, alpha, not me)
-            temp[0] *= -1
+            temp = [alphaBeta(game.nextBoard(me,move), depth-1, beta, alpha, not me)[0], move]
             if alpha[0] < temp[0]:
                 alpha = temp
-                alpha[1] = move
-            if alpha[0] >= beta[0]:
+            #alpha = max(alpha, [-1 * alphaBeta(game.nextBoard(me,move), depth-1, beta, alpha, not me)[0], move])
+            if alpha[0] > beta[0]:
                 return alpha
         return alpha
     ret = alphaBeta(gameState, depth, [-inf, -1], [inf, -1], True)
     util = ret[0]
     action = ret[1]
+    #print(action)
     gameState.move(currBoard, action, True)
     return action
 

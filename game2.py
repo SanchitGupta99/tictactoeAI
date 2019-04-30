@@ -20,10 +20,11 @@ class GameState(object):
     def move(self,board,move, me):
         if board == None:
             board = self.curBoardNumber
-
+        print(self.boards)
         xbefore = self.score(board,playerX)
         obefore = self.score(board,playerO)
-
+        print("BOARD IS {}".format(board))
+        print("MOVE IS {}".format(move))
         if me:
             self.boards[board-1][move-1]= self.player
         elif self.player == playerO:
@@ -87,7 +88,7 @@ class GameState(object):
             return self.oPlayerScore-self.xPlayerScore
 
     def nextBoard(self,me,move):
-        newB = copy.copy(self)
+        newB = copy.deepcopy(self)
         newB.move(move,self.curBoardNumber,not me)
         return newB
 

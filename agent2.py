@@ -5,23 +5,18 @@ import sys
 
 gameState= GameState()
 currBoard=None
-depth=4
+depth=5
 
 def minimaxMove():
     def alphaBeta(game,depth,alpha,beta,me):
         if game.isEnd() or depth==0:
             return (game.getScore(),-1)
 
-
         moves = game.getMoves()
         if me:
             ans = (-float('Inf'),-1)
             for move in moves:
-                result = alphaBeta(game.nextBoard(not me,move),depth-1,alpha,beta,not me)
-                print(result)
-                if result == None:
-                    print("result is NONE")
-                ans = max(ans,(alphaBeta(game.nextBoard(not me,move),depth-1,alpha,beta,not me)[0],move))
+                ans = max(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
                 alpha= max(alpha,ans)
                 if alpha >= beta:
                     break
@@ -29,17 +24,17 @@ def minimaxMove():
         else:
             ans = (float('Inf'),-1)
             for move in moves:
-                ans = min(ans,(alphaBeta(game.nextBoard(not me,move),depth-1,alpha,beta,not me)[0],move))
+                ans = min(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
                 beta = min(beta,ans)
                 if alpha>= beta:
                     break
-                return beta
+            return beta
 
     alphaInitial=(-float('Inf'),-1)
     betaInitial = (float('Inf'),-1)
 
     ut,action = alphaBeta(gameState,depth, alphaInitial,betaInitial,True)
-    gameState.move(currBoard,action)
+    gameState.move(action,currBoard,True)
     print("action is {}".format(action))
     return action
 
@@ -49,7 +44,6 @@ def agentSecondMove(firstBoard, firstMove):
     # First move
     gameState.move(firstBoard, firstMove,False)
     # Next move
-    print('running minimax')
     return minimaxMove()
 
 def agentThirdMove(firstBoard, firstMove, secondMove):
@@ -87,7 +81,6 @@ def parse(string):
             print("setting player to o ")
             gameState.setPlayer('o')
     elif command == "second_move":
-        print("Running second move")
         return agentSecondMove(int(args[0]), int(args[1]))
     elif command == "third_move":
         return agentThirdMove(int(args[0]), int(args[1]), int(args[2]))

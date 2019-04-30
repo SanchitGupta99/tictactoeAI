@@ -17,7 +17,7 @@ class GameState(object):
     def setPlayer(self,player):
         self.player=player
 
-    def move(self,move,board, me):
+    def move(self,board,move, me):
         if board == None:
             board = self.curBoardNumber
 

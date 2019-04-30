@@ -34,7 +34,7 @@ def minimaxMove():
     betaInitial = (float('Inf'),-1)
 
     ut,action = alphaBeta(gameState,depth, alphaInitial,betaInitial,True)
-    gameState.move(action,currBoard,True)
+    gameState.move(currBoard,action,True)
     print("action is {}".format(action))
     return action
 

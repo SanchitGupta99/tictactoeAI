@@ -5,28 +5,40 @@ import sys
 
 gameState= GameState()
 currBoard=None
-depth=5
+depth=9
 
 def minimaxMove():
     def alphaBeta(game,depth,alpha,beta,me):
         if game.isEnd() or depth==0:
+            print(game.getScore())
             return (game.getScore(),-1)
 
         moves = game.getMoves()
         if me:
             ans = (-float('Inf'),-1)
             for move in moves:
-                ans = max(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
-                alpha= max(alpha,ans)
-                if alpha >= beta:
+                result = (alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move)
+                if ans[0]<result[0]:
+                    ans=result
+                if alpha[0]<ans[0]:
+                    alpha = ans
+                #ans = max(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
+                #alpha= max(alpha,ans)
+                if alpha[0] >= beta[0]:
                     break
             return alpha
         else:
             ans = (float('Inf'),-1)
             for move in moves:
-                ans = min(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
-                beta = min(beta,ans)
-                if alpha>= beta:
+                result = (alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move)
+                if ans[0]>result[0]:
+                    ans=result
+                if alpha[0]>ans[0]:
+                    alpha = ans
+
+                #ans = min(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
+                #beta = min(beta,ans)
+                if alpha[0]>= beta[0]:
                     break
             return beta
 

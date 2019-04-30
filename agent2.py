@@ -5,47 +5,47 @@ import sys
 
 gameState= GameState()
 currBoard=None
-depth=9
+depth=6
 
 def minimaxMove():
     def alphaBeta(game,depth,alpha,beta,me):
         if game.isEnd() or depth==0:
-            print(game.getScore())
-            return (game.getScore(),-1)
+            return [game.getScore(),-1]
 
         moves = game.getMoves()
         if me:
-            ans = (-float('Inf'),-1)
+            ans = [-float('Inf'),-1]
             for move in moves:
-                result = (alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move)
-                if ans[0]<result[0]:
-                    ans=result
+                result = alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0]
+                if ans[0]<result:
+                    ans[0]=result
+                    ans[1]=move
                 if alpha[0]<ans[0]:
-                    alpha = ans
-                #ans = max(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
-                #alpha= max(alpha,ans)
+                    alpha[0] = ans[0]
+                    alpha[1]=ans[1]
+
                 if alpha[0] >= beta[0]:
                     break
             return alpha
         else:
-            ans = (float('Inf'),-1)
+            ans = [float('Inf'),-1]
             for move in moves:
-                result = (alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move)
-                if ans[0]>result[0]:
-                    ans=result
+                result = alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0]
+                if ans[0]>result:
+                    ans[0]=result
+                    ans[1]=move
                 if alpha[0]>ans[0]:
-                    alpha = ans
+                    alpha[0] = ans[0]
+                    alpha[1]=ans[1]
 
-                #ans = min(ans,(alphaBeta(game.nextBoard(me,move),depth-1,alpha,beta,not me)[0],move))
-                #beta = min(beta,ans)
                 if alpha[0]>= beta[0]:
                     break
             return beta
 
-    alphaInitial=(-float('Inf'),-1)
-    betaInitial = (float('Inf'),-1)
+    alphaInitial=[-float('Inf'),-1]
+    betaInitial = [float('Inf'),-1]
 
-    ut,action = alphaBeta(gameState,depth, alphaInitial,betaInitial,True)
+    action = alphaBeta(gameState,depth, alphaInitial,betaInitial,True)[1]
     gameState.move(currBoard,action,True)
     print("action is {}".format(action))
     return action

@@ -1,7 +1,7 @@
 import copy
 
-playerX = "x"
-playerO = "o"
+playerX = 1
+playerO = -1
 playerEmpty ="-"
 
 
@@ -120,5 +120,6 @@ class GameState(object):
                     elif self.boards[i][j]==playerO:
                         ocount = ocount +1
                 if ocount ==3 or xcount ==3:
+                    print('Somones won')
                     return True
         return False

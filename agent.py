@@ -7,7 +7,7 @@ import sys
 gameState = GameState()
 currBoard = None
 MINIMAX_DEPTH = 3
-
+'''
 class Tree(object):
     """A Tree with a list of Trees as children
         and a value (a Board)"""
@@ -122,7 +122,7 @@ def minimaxMove():
 '''
 
 #VERSION 1
-'''
+
 def minimaxMove():
     move= alphaBeta(gameState, MINIMAX_DEPTH, (-1 * inf,-1), (inf,-1))[1]
     gameState.move(currBoard,move)

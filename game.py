@@ -10,12 +10,23 @@ class GameState(object):
     def __init__(self):
         self.us=0
         self.curPlayer = 0
-        self.boards = [[0 for x in range(1, 10)] for o in range(1, 10)]
+        self.boards = [[0 for x in range(9)] for o in range(9)]
         self.curBoardNumber = None
         self.lastBoardNumber = None
-        self.xPlayerScore = None
-        self.oPlayerScore = None
+        self.xPlayerScore = 0
+        self.oPlayerScore = 0
 
+
+
+    def __copy__(self):
+        board_copy = GameState()
+        board_copy.boards = copy.deepcopy(self.boards)
+        board_copy.us = copy.deepcopy(self.us)
+        board_copy.xPlayerScore = copy.deepcopy(self.xPlayerScore)
+        board_copy.oPlayerScore = copy.deepcopy(self.oPlayerScore)
+        board_copy.curBoardNumber = copy.deepcopy(self.curBoardNumber)
+        board_copy.curPlayer= copy.deepcopy(self.curPlayer)
+        return board_copy
 
     def setPlayer(self,a):
         if a=='x':
@@ -60,12 +71,16 @@ class GameState(object):
         else:
             self.lastBoardNumber= self.curBoardNumber
 
-
+        previous_x = self.boardScore(1,board)
+        previous_o = self.boardScore(-1,board)
 
         self.boards[board][move] = self.curPlayer
 
-        self.xPlayerScore= self.boardScore(1,board)
-        self.oPlayerScore = self.boardScore(-1,board)
+        new_x = self.boardScore(1,board)
+        new_o = self.boardScore(-1,board)
+
+        self.xPlayerScore= self.xPlayerScore - previous_x + new_x
+        self.oPlayerScore = self.oPlayerScore - previous_o + new_o
 
         self.curBoardNumber= move
         self.curPlayer = -self.curPlayer
@@ -111,7 +126,7 @@ class GameState(object):
                     if self.boards[current][i] == 1:
                         count += 1
                 if count == 3:
-                    print("IVE HTI END WITH X WINNING")
+                    print("IVE HTI END WITH X")
                     return True
             for possibleWinner in combos:
                 count = 0
@@ -124,6 +139,6 @@ class GameState(object):
     # creates a new board which adds a move to the current board
     def nextBoard(self,move):
         #print(move)
-        newB= copy.deepcopy(self)
+        newB= copy.copy(self)
         newB.move(None,move)
         return newB
